@@ -69,3 +69,34 @@ plt.show()
 visualisasi grafik batang yang menunjukkan rata-rata PDB per kapita setiap tahun di setiap lokasi. Langkah-langkah yang dilakukan meliputi menambahkan kolom tahun ke dalam dataframe, menghitung rata-rata PDB per kapita setiap tahun di setiap lokasi, mengubah struktur dataframe menjadi pivot table, dan membuat visualisasi grafik batang menggunakan library seaborn. Hasil akhirnya adalah grafik batang yang menunjukkan rata-rata PDB per kapita setiap tahun di setiap lokasi.<br><br>
 </div>
 
+<div>
+  <pre>
+    <code>
+import geopandas as gpd
+import matplotlib.pyplot as plt
+
+world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
+
+gdp_2020 = df_yearly_gdp[df_yearly_gdp['year'] == 2020]
+world_gdp = world.merge(gdp_2020, how='left', left_on='name', right_on='location')
+
+fig, ax = plt.subplots(figsize=(20,10))
+world_gdp.plot(column='gdp_per_capita',edgecolor=u'gray', cmap='Blues', ax=ax, legend=True, legend_kwds={'label': 'GDP per Capita ($)', 'orientation': 'horizontal'})
+ax.set_title('World GDP per Capita in 2020')
+ax.set_axis_off()
+
+leg = ax.get_legend()
+
+for text in leg.get_texts():
+    text.set_color('white')
+
+leg.get_title().set_color('white')
+
+plt.show()
+
+    </code>
+  </pre>
+  <p align="justify">
+membuat peta dunia dengan GDP per kapita sebagai variabel. Pertama, diambil data shapefile dunia dari library Geopandas, kemudian di-merge dengan data GDP tahunan yang sudah dihitung sebelumnya. Data GDP diambil untuk tahun 2020 saja. Selanjutnya, peta dunia dibuat dengan menampilkan data GDP per kapita menggunakan plot dengan skala warna yang berbeda-beda. Pada akhirnya, disesuaikan tampilan plot seperti judul, legenda, serta tampilan legend dan label untuk memastikan plot lebih mudah dipahami dan estetis.
+</p>
+</div>
