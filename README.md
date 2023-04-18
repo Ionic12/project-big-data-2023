@@ -131,9 +131,8 @@ Apache Spark untuk melakukan analisis data pada file CSV berisi data GDP. Proses
 ![Spark](upload_data.png)
 
 ### proses
-![Spark](melakukan proses 1.png)
-
-![Spark](melakukan proses 2.png)
+<img src="melakukan proses 1.png" />
+<img src="melakukan proses 2.png" />
 
 ### hasil
 ![Spark](hasil.png)
