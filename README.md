@@ -20,33 +20,28 @@ Flowchart preprocessing data pada dataset "Impact of Covid-19 Pandemic on the Gl
 <div>
   <pre>
     <code>
-      import pandas as pd
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# load dataset
 df = pd.read_csv('raw_data.csv')
 
-# keep only the desired columns
 df = df[['iso_code', 'location', 'date', 'total_cases', 'total_deaths', 'stringency_index', 'population', 'gdp_per_capita', 'human_development_index']]
 
-# drop rows with missing values
 df.dropna(inplace=True)
 
-# convert date column to datetime format
 df['date'] = pd.to_datetime(df['date'])
 
-# sort dataframe by location and date
 df.sort_values(['location', 'date'], inplace=True)
 
-# reset index
 df.reset_index(drop=True, inplace=True)
 
-# save preprocessed data to new file
 df.to_csv('covid_impact_on_global_economy_preprocessed.csv', index=False)
 
     </code>
   </pre>
-  <p>Fungsi greeting digunakan untuk memberikan salam kepada seseorang.</p>
+  <div align="justify">
+    preprocessing data untuk dataset "Impact of Covid-19 Pandemic on the Global Economy" menggunakan library Pandas di Python. Preprocessing dilakukan untuk membersihkan data dari kolom-kolom yang tidak diperlukan dan baris-baris yang kosong/null. Kemudian dilakukan pengurutan data berdasarkan lokasi dan waktu, serta pengubahan format kolom tanggal ke dalam format datetime. Setelah itu, dilakukan penghapusan index lama dan penggantian dengan index yang baru. Terakhir, data yang telah di-preprocessing disimpan ke dalam file csv baru dengan nama "covid_impact_on_global_economy_preprocessed.csv".
+</div>
 </div>
