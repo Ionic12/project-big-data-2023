@@ -44,3 +44,29 @@ df.to_csv('covid_impact_on_global_economy_preprocessed.csv', index=False)
     preprocessing data untuk dataset "Impact of Covid-19 Pandemic on the Global Economy" menggunakan library Pandas di Python. Preprocessing dilakukan untuk membersihkan data dari kolom-kolom yang tidak diperlukan dan baris-baris yang kosong/null. Kemudian dilakukan pengurutan data berdasarkan lokasi dan waktu, serta pengubahan format kolom tanggal ke dalam format datetime. Setelah itu, dilakukan penghapusan index lama dan penggantian dengan index yang baru. Terakhir, data yang telah di-preprocessing disimpan ke dalam file csv baru dengan nama "covid_impact_on_global_economy_preprocessed.csv".
 </p>
 </div>
+
+# Visualisasi
+<div>
+  <pre>
+    <code>
+df['year'] = df['date'].dt.year
+
+df_yearly_gdp = df.groupby(['location', 'year']).agg({'gdp_per_capita': 'mean'}).reset_index()
+
+df_pivot = df_yearly_gdp.pivot(index='location', columns='year', values='gdp_per_capita')
+
+plt.figure(figsize=(20, 50))
+plt.title('Yearly GDP per Capita by Location')
+sns.barplot(data=df_yearly_gdp, y='location', x='gdp_per_capita', hue='year', orient='h')
+plt.xlabel('GDP per Capita')
+plt.ylabel('Location')
+plt.legend(loc='center right', bbox_to_anchor=(1.2, 0.5))
+plt.tight_layout()
+plt.show()
+    </code>
+  </pre>
+  <p align="justify">
+visualisasi grafik batang yang menunjukkan rata-rata PDB per kapita setiap tahun di setiap lokasi. Langkah-langkah yang dilakukan meliputi menambahkan kolom tahun ke dalam dataframe, menghitung rata-rata PDB per kapita setiap tahun di setiap lokasi, mengubah struktur dataframe menjadi pivot table, dan membuat visualisasi grafik batang menggunakan library seaborn. Hasil akhirnya adalah grafik batang yang menunjukkan rata-rata PDB per kapita setiap tahun di setiap lokasi.\n\n
+</p>
+</div>
+
