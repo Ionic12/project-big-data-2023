@@ -99,3 +99,41 @@ plt.show()
 membuat peta dunia dengan GDP per kapita sebagai variabel. Pertama, diambil data shapefile dunia dari library Geopandas, kemudian di-merge dengan data GDP tahunan yang sudah dihitung sebelumnya. Data GDP diambil untuk tahun 2020 saja. Selanjutnya, peta dunia dibuat dengan menampilkan data GDP per kapita menggunakan plot dengan skala warna yang berbeda-beda. Pada akhirnya, disesuaikan tampilan plot seperti judul, legenda, serta tampilan legend dan label untuk memastikan plot lebih mudah dipahami dan estetis.
 </p>
 </div>
+
+# Proses Skenario
+<div>
+  <pre>
+    <code>
+import org.apache.spark.sql.functions.{avg, year}
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.DataFrame
+import spark.implicits._
+
+val spark = SparkSession.builder.appName("GDP Analysis").getOrCreate()
+
+val df: DataFrame = spark.read.format("csv").option("header", "true").option("database", "mydb").load("file:///home/cloudera/final.csv")
+
+val cleanedDf = df.na.drop().dropDuplicates()
+
+val transformedDf = cleanedDf.withColumn("year", year(cleanedDf("date"))).groupBy("location", "year").agg(avg("gdp_per_capita")).orderBy("location", "year").toDF("location", "year", "avg_gdp_per_capita")
+
+transformedDf.write.format("csv").option("header", "true").mode("overwrite").save("file:///home/cloudera/gdp_per_year.csv")
+
+spark.stop()
+    </code>
+  </pre>
+  <p align="justify">
+Apache Spark untuk melakukan analisis data pada file CSV berisi data GDP. Proses yang dilakukan adalah membaca file CSV menggunakan SparkSession, membersihkan dan memproses data, menambahkan kolom baru untuk menghitung rata-rata GDP per kapita berdasarkan tahun dan lokasi, serta menyimpan hasil analisis ke dalam file CSV. Tahap-tahap tersebut dilakukan menggunakan operasi DataFrame Spark SQL dan fungsi-fungsi Spark SQL seperti avg() dan year(). kami menggunakan DataFrame yang menggunakan fungsi-fungsi seperti .na.drop(), .withColumn(), .groupBy(), .agg(), .orderBy(), dan .toDF(). Selain itu, variabel df juga dideklarasikan sebagai objek DataFrame dengan tipe DataFrame. Sedangkan jika menggunakan Dataset, maka kita akan menggunakan fungsi-fungsi seperti .filter(), .map(), dan .reduce().
+</p>
+</div>
+![Spark](upload_data.png)
+![Spark](melakukan proses 1.png)
+![Spark](melakukan proses 2.png)
+![Spark](hasil.png)
+
+<div align="justify">
+Proses pertama melakukan upload data CSV menggunakan winscp selanjutnya melakukan ekseskusi kode scala diatas dan hasilnya tertera pada gambar terakhir dengan nama file gdp_per_year.csv 
+</div>
+
+# Kendala
+Terdapat kendala dalam menampilkan visualisasi di Spark dikarenakan library atau package yang tidak bisa di install
