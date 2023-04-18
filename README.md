@@ -127,16 +127,15 @@ Apache Spark untuk melakukan analisis data pada file CSV berisi data GDP. Proses
 </p>
 </div>
 
-### upload
+## upload
 ![Spark](upload_data.png)
 
-### proses
+## proses
 <img src="melakukan proses 1.png" />
 <img src="melakukan proses 2.png" />
 
-### hasil
+## hasil
 ![Spark](hasil.png)
-
 
 <div align="justify">
 Proses pertama melakukan upload data CSV menggunakan winscp selanjutnya melakukan ekseskusi kode scala diatas dan hasilnya tertera pada gambar terakhir dengan nama file gdp_per_year.csv 
