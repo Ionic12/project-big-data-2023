@@ -126,6 +126,7 @@ spark.stop()
 Apache Spark untuk melakukan analisis data pada file CSV berisi data GDP. Proses yang dilakukan adalah membaca file CSV menggunakan SparkSession, membersihkan dan memproses data, menambahkan kolom baru untuk menghitung rata-rata GDP per kapita berdasarkan tahun dan lokasi, serta menyimpan hasil analisis ke dalam file CSV. Tahap-tahap tersebut dilakukan menggunakan operasi DataFrame Spark SQL dan fungsi-fungsi Spark SQL seperti avg() dan year(). kami menggunakan DataFrame yang menggunakan fungsi-fungsi seperti .na.drop(), .withColumn(), .groupBy(), .agg(), .orderBy(), dan .toDF(). Selain itu, variabel df juga dideklarasikan sebagai objek DataFrame dengan tipe DataFrame. Sedangkan jika menggunakan Dataset, maka kita akan menggunakan fungsi-fungsi seperti .filter(), .map(), dan .reduce().
 </p>
 </div>
+
 ![Spark](upload_data.png)
 ![Spark](melakukan proses 1.png)
 ![Spark](melakukan proses 2.png)
