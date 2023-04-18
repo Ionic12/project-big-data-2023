@@ -93,7 +93,6 @@ for text in leg.get_texts():
 leg.get_title().set_color('white')
 
 plt.show()
-
     </code>
   </pre>
   <p align="justify">
