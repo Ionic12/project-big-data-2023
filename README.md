@@ -38,10 +38,9 @@ df.sort_values(['location', 'date'], inplace=True)
 df.reset_index(drop=True, inplace=True)
 
 df.to_csv('covid_impact_on_global_economy_preprocessed.csv', index=False)
-
     </code>
   </pre>
-  <div align="justify">
+  <p align="justify">
     preprocessing data untuk dataset "Impact of Covid-19 Pandemic on the Global Economy" menggunakan library Pandas di Python. Preprocessing dilakukan untuk membersihkan data dari kolom-kolom yang tidak diperlukan dan baris-baris yang kosong/null. Kemudian dilakukan pengurutan data berdasarkan lokasi dan waktu, serta pengubahan format kolom tanggal ke dalam format datetime. Setelah itu, dilakukan penghapusan index lama dan penggantian dengan index yang baru. Terakhir, data yang telah di-preprocessing disimpan ke dalam file csv baru dengan nama "covid_impact_on_global_economy_preprocessed.csv".
-</div>
+</p>
 </div>
