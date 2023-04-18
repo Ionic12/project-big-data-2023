@@ -16,11 +16,37 @@ Dataset "Impact of Covid-19 Pandemic on the Global Economy" adalah kumpulan data
 Flowchart preprocessing data pada dataset "Impact of Covid-19 Pandemic on the Global Economy" dimulai dengan memuat data dari file yang tersedia. Proses pertama yang dilakukan adalah menghilangkan kolom yang tidak memiliki header, yang kemudian dilanjutkan dengan menghilangkan baris yang memiliki nilai null atau kosong.Setelah itu, data akan disortir berdasarkan waktu dan lokasi, dan kemudian dilakukan reset index untuk mengembalikan index yang diurutkan. Setelah proses ini selesai, pengguna akan dihadapkan pada sebuah decision point, yaitu apakah akan dilakukan proses ETL atau tidak. Jika pengguna memilih untuk melakukan proses ETL, maka langkah selanjutnya adalah mengambil kolom yang diperlukan untuk analisis dan menghitung rata-rata setiap tahun dari setiap negara selama pandemi Covid-19. Setelah itu, dilakukan visualisasi data untuk memudahkan pemahaman. Namun, jika pengguna memilih untuk tidak melakukan proses ETL, maka proses preprocessing data selesai dan data siap digunakan untuk analisis lebih lanjut.
 </div>
 
-### Contoh Kode JavaScript
+# Preprocessing dan ETL
+<div>
+  <pre>
+    <code>
+      import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-```javascript
-function greeting(name) {
-  console.log(`Hello, ${name}!`);
-}
+# load dataset
+df = pd.read_csv('raw_data.csv')
 
-greeting("World");
+# keep only the desired columns
+df = df[['iso_code', 'location', 'date', 'total_cases', 'total_deaths', 'stringency_index', 'population', 'gdp_per_capita', 'human_development_index']]
+
+# drop rows with missing values
+df.dropna(inplace=True)
+
+# convert date column to datetime format
+df['date'] = pd.to_datetime(df['date'])
+
+# sort dataframe by location and date
+df.sort_values(['location', 'date'], inplace=True)
+
+# reset index
+df.reset_index(drop=True, inplace=True)
+
+# save preprocessed data to new file
+df.to_csv('covid_impact_on_global_economy_preprocessed.csv', index=False)
+
+    </code>
+  </pre>
+  <p>Fungsi greeting digunakan untuk memberikan salam kepada seseorang.</p>
+</div>
