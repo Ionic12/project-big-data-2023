@@ -110,27 +110,15 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import avg
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-# Create SparkSession
 spark = SparkSession.builder.appName("DataAnalysis").getOrCreate()
-
-# Load dataset from CSV
 df = spark.read.csv("/opt/spark/datatest/final_data.csv", header=True, inferSchema=True)
-
-# Clean data
 df = df.dropDuplicates()
 df = df.na.drop()
-
-# Transform data
 df_transformed = df.groupBy(["location", "date"]).agg(avg("gdp_per_capita").alias("avg_gdp_per_capita"))
-
-# Visualize data
 fig, ax = plt.subplots()
 sns.lineplot(x="date", y="avg_gdp_per_capita", hue="location", data=df_transformed.toPandas(), ax=ax)
 ax.set_title("Average GDP per Capita by Location")
 plt.show()
-
-# Export data
 df_transformed.write.csv("transformed_data.csv", header=True)
     </code>
   </pre>
