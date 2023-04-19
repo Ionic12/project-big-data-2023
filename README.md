@@ -46,6 +46,7 @@ df.to_csv('covid_impact_on_global_economy_preprocessed.csv', index=False)
 </div>
 
 # Visualisasi
+<img src="diagram_batang.png" />
 <div>
   <pre>
     <code>
@@ -69,6 +70,7 @@ plt.show()
 visualisasi grafik batang yang menunjukkan rata-rata PDB per kapita setiap tahun di setiap lokasi. Langkah-langkah yang dilakukan meliputi menambahkan kolom tahun ke dalam dataframe, menghitung rata-rata PDB per kapita setiap tahun di setiap lokasi, mengubah struktur dataframe menjadi pivot table, dan membuat visualisasi grafik batang menggunakan library seaborn. Hasil akhirnya adalah grafik batang yang menunjukkan rata-rata PDB per kapita setiap tahun di setiap lokasi.<br><br>
 </div>
 
+<img src="peta_persebaran.png" />
 <div>
   <pre>
     <code>
@@ -104,42 +106,44 @@ membuat peta dunia dengan GDP per kapita sebagai variabel. Pertama, diambil data
 <div>
   <pre>
     <code>
-import org.apache.spark.sql.functions.{avg, year}
-import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.DataFrame
-import spark.implicits._
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import avg
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-val spark = SparkSession.builder.appName("GDP Analysis").getOrCreate()
+# Create SparkSession
+spark = SparkSession.builder.appName("DataAnalysis").getOrCreate()
 
-val df: DataFrame = spark.read.format("csv").option("header", "true").option("database", "mydb").load("file:///home/cloudera/final.csv")
+# Load dataset from CSV
+df = spark.read.csv("/opt/spark/datatest/final_data.csv", header=True, inferSchema=True)
 
-val cleanedDf = df.na.drop().dropDuplicates()
+# Clean data
+df = df.dropDuplicates()
+df = df.na.drop()
 
-val transformedDf = cleanedDf.withColumn("year", year(cleanedDf("date"))).groupBy("location", "year").agg(avg("gdp_per_capita")).orderBy("location", "year").toDF("location", "year", "avg_gdp_per_capita")
+# Transform data
+df_transformed = df.groupBy(["location", "date"]).agg(avg("gdp_per_capita").alias("avg_gdp_per_capita"))
 
-transformedDf.write.format("csv").option("header", "true").mode("overwrite").save("file:///home/cloudera/gdp_per_year.csv")
+# Visualize data
+fig, ax = plt.subplots()
+sns.lineplot(x="date", y="avg_gdp_per_capita", hue="location", data=df_transformed.toPandas(), ax=ax)
+ax.set_title("Average GDP per Capita by Location")
+plt.show()
 
-spark.stop()
+# Export data
+df_transformed.write.csv("transformed_data.csv", header=True)
     </code>
   </pre>
   <p align="justify">
-Apache Spark untuk melakukan analisis data pada file CSV berisi data GDP. Proses yang dilakukan adalah membaca file CSV menggunakan SparkSession, membersihkan dan memproses data, menambahkan kolom baru untuk menghitung rata-rata GDP per kapita berdasarkan tahun dan lokasi, serta menyimpan hasil analisis ke dalam file CSV. Tahap-tahap tersebut dilakukan menggunakan operasi DataFrame Spark SQL dan fungsi-fungsi Spark SQL seperti avg() dan year(). kami menggunakan DataFrame yang menggunakan fungsi-fungsi seperti .na.drop(), .withColumn(), .groupBy(), .agg(), .orderBy(), dan .toDF(). Selain itu, variabel df juga dideklarasikan sebagai objek DataFrame dengan tipe DataFrame. Sedangkan jika menggunakan Dataset, maka kita akan menggunakan fungsi-fungsi seperti .filter(), .map(), dan .reduce().
+Pertama-tama, dataset di-load dari file CSV menggunakan PySpark SparkSession dan dibersihkan dari data yang tidak valid seperti data kosong dan duplikat. Setelah data bersih, data di-transformasikan dengan menggunakan fungsi PySpark groupBy dan agg untuk menghitung rata-rata gdp_per_capita dari setiap lokasi dan tanggal. Selanjutnya, hasil analisis divisualisasikan dengan menggunakan fungsi matplotlib dan seaborn untuk menghasilkan grafik garis yang menunjukkan rata-rata GDP per Kapita untuk setiap lokasi dan tanggal. Terakhir, hasil analisis diekspor ke dalam format CSV menggunakan fungsi PySpark write. Kode tersebut menunjukkan contoh dari proses analisis data yang lengkap dengan PySpark, dimulai dari loading data, pembersihan data, transformasi data, visualisasi data, dan ekspor hasil analisis.
 </p>
 </div>
 
 ## upload
-![Spark](upload_data.png)
+<img src="preparing_data.png" />
 
 ## proses
-<img src="melakukan proses 1.png" />
-<img src="melakukan proses 2.png" />
+<img src="proses.png" />
 
 ## hasil
-![Spark](hasil.png)
-
-<div align="justify">
-Proses pertama melakukan upload data CSV menggunakan winscp selanjutnya melakukan ekseskusi kode scala diatas dan hasilnya tertera pada gambar terakhir dengan nama file gdp_per_year.csv 
-</div>
-
-# Kendala
-Terdapat kendala dalam menampilkan visualisasi di Spark dikarenakan library atau package yang tidak bisa di install
+<img src="hasil.png" />
