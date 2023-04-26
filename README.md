@@ -20,28 +20,19 @@ Flowchart preprocessing data pada dataset "Impact of Covid-19 Pandemic on the Gl
 <div>
   <pre>
     <code>
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-df = pd.read_csv('raw_data.csv')
-
-df = df[['iso_code', 'location', 'date', 'total_cases', 'total_deaths', 'stringency_index', 'population', 'gdp_per_capita', 'human_development_index']]
-
-df.dropna(inplace=True)
-
-df['date'] = pd.to_datetime(df['date'])
-
-df.sort_values(['location', 'date'], inplace=True)
-
-df.reset_index(drop=True, inplace=True)
-
-df.to_csv('covid_impact_on_global_economy_preprocessed.csv', index=False)
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import to_date
+spark = SparkSession.builder.appName("DataAnalysis").getOrCreate()
+df = spark.read.format("csv").option("header", "true").load("raw_data.csv")
+df = df.select("iso_code", "location", "date", "total_cases", "total_deaths", "stringency_index", "population", "gdp_per_capita", "human_development_index")
+df = df.na.drop()
+df = df.withColumn("date", to_date(df["date"]))
+df = df.orderBy(["location", "date"])
+df.write.mode("overwrite").option("header", "true").csv("covid_impact_on_global_economy_preprocessed.csv")
     </code>
   </pre>
   <p align="justify">
-    preprocessing data untuk dataset "Impact of Covid-19 Pandemic on the Global Economy" menggunakan library Pandas di Python. Preprocessing dilakukan untuk membersihkan data dari kolom-kolom yang tidak diperlukan dan baris-baris yang kosong/null. Kemudian dilakukan pengurutan data berdasarkan lokasi dan waktu, serta pengubahan format kolom tanggal ke dalam format datetime. Setelah itu, dilakukan penghapusan index lama dan penggantian dengan index yang baru. Terakhir, data yang telah di-preprocessing disimpan ke dalam file csv baru dengan nama "covid_impact_on_global_economy_preprocessed.csv".
+    membuat sebuah SparkSession dengan nama "DataAnalysis". Kemudian,  memuat file "raw_data.csv" ke dalam sebuah DataFrame menggunakan format sumber data CSV dan opsi "header" yang diatur ke "true" untuk menunjukkan bahwa baris pertama file berisi nama kolom. Kode memilih kolom yang relevan untuk dianalisis, yaitu "iso_code", "location", "date", "total_cases", "total_deaths", "stringency_index", "population", "gdp_per_capita", dan "human_development_index". Langkah berikutnya menghapus baris apa pun dengan nilai yang hilang menggunakan metode "na.drop()". Kolom tanggal kemudian dikonversi dari tipe string menjadi tipe tanggal menggunakan fungsi "to_date()" dari modul "pyspark.sql.functions". DataFrame kemudian diurutkan berdasarkan lokasi dan tanggal menggunakan metode "orderBy()". Akhirnya, data yang telah diproses disimpan ke dalam file CSV menggunakan metode "write()" dengan mode "overwrite" dan opsi "header" yang diatur ke "true" untuk menyertakan nama kolom dalam file output.
 </p>
 </div>
 
