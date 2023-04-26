@@ -17,6 +17,7 @@ Flowchart preprocessing data pada dataset "Impact of Covid-19 Pandemic on the Gl
 </div>
 
 # Preprocessing dan ETL
+<img src="preprocessing.png" />
 <div>
   <pre>
     <code>
