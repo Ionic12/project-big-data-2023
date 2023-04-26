@@ -89,7 +89,7 @@ plt.show()
     </code>
   </pre>
   <p align="justify">
-membuat peta dunia dengan GDP per kapita sebagai variabel. Pertama, diambil data shapefile dunia dari library Geopandas, kemudian di-merge dengan data GDP tahunan yang sudah dihitung sebelumnya. Data GDP diambil untuk tahun 2020 saja. Selanjutnya, peta dunia dibuat dengan menampilkan data GDP per kapita menggunakan plot dengan skala warna yang berbeda-beda. Pada akhirnya, disesuaikan tampilan plot seperti judul, legenda, serta tampilan legend dan label untuk memastikan plot lebih mudah dipahami dan estetis.
+membuat peta dunia dengan GDP per kapita sebagai variabel. Pertama, diambil data shapefile dunia dari library Geopandas, kemudian di-merge dengan data GDP tahunan yang sudah dihitung sebelumnya. Data GDP diambil untuk tahun 2020 saja. Selanjutnya, peta dunia dibuat dengan menampilkan data GDP per kapita menggunakan plot dengan skala warna yang berbeda-beda. Pada akhirnya, disesuaikan tampilan plot seperti judul, legenda, serta tampilan legend dan label untuk memastikan plot lebih mudah dipahami dan estetis. (untuk visualisasi ini menggunakan phyton dikarenakan data mendukung untuk melakukan visualisasi dengan peta dunia , dan geopandas dan matplotlib adalah library Python yang tidak didukung langsung oleh PySpark )
 </p>
 </div>
 
