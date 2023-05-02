@@ -81,9 +81,8 @@ Pada skenario ini yang dilakukan adalah melakukan analisa mengenai average GDP p
   <pre>
     <code>
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import avg
-import matplotlib.pyplot as plt
-import seaborn as sns
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import month, avg
 spark = SparkSession.builder.appName("DataAnalysis").getOrCreate()
 df = spark.read.csv("/opt/spark/datatest/raw_data.csv", header=True, inferSchema=True)
 df = df.dropDuplicates()
@@ -93,11 +92,17 @@ df_transformed = df.select("location", "date", "total_cases", "total_deaths", "s
                    .withColumnRenamed("sum(total_cases)", "total_cases") \
                    .withColumnRenamed("sum(total_deaths)", "total_deaths") \
                    .withColumnRenamed("avg(stringency_index)", "avg_stringency_index")
-df_transformed.select("location", "date", "total_cases", "total_deaths", "avg_stringency_index").write.csv("transformed_data.csv", header=True)
+df_transformed = df_transformed.withColumn("bulan", month(df_transformed["date"]))
+df_monthly_avg = df_transformed.groupBy(["location", "bulan"]).agg(
+    avg("total_cases").alias("avg_total_cases"),
+    avg("total_deaths").alias("avg_total_deaths"),
+    avg("avg_stringency_index").alias("avg_stringency_index")
+).orderBy(["location", "bulan"])
+df_monthly_avg .write.csv("transformed_data_3.csv", header=True)
     </code>
   </pre>
   <p align="justify">
-Pada skenario ini yang dilakukan adalah melakukan analisa mengenai perbandingan kebijakan pemerintah dan dampaknya yang bisa digunakan untuk membandingkan kebijakan pemerintah yang diambil di berbagai negara untuk menghadapi pandemi Covid-19, dan dampaknya terhadap angka kasus dan kematian. Hal ini dapat membantu dalam memahami kebijakan mana yang lebih efektif dalam menangani pandemi Covid-19. Menggunakan Apache Spark dalam membaca, membersihkan, mengubah format, dan menganalisis data dari file CSV. Data dari file CSV dibaca menggunakan SparkSession, kemudian dilakukan pembersihan dengan menghapus duplikat dan data yang bernilai null. Selanjutnya, data diubah formatnya dengan memilih kolom tertentu dan melakukan agregasi pada kolom-kolom tersebut. Setelah itu, data dikelompokkan dan dihitung rata-ratanya berdasarkan bulan. Hasil akhirnya diurutkan berdasarkan lokasi dan bulan, kemudian ditulis ke file CSV. Kode tersebut memanfaatkan fungsi-fungsi yang ada di dalam pyspark.sql.functions seperti month() dan avg(). Hasil akhir dari analisis data tersebut disimpan dalam variabel df_transformed dan df_monthly_avg.
+Pada skenario ini yang dilakukan adalah melakukan analisa mengenai perbandingan kebijakan pemerintah dan dampaknya yang bisa digunakan untuk membandingkan kebijakan pemerintah yang diambil di berbagai negara untuk menghadapi pandemi Covid-19, dan dampaknya terhadap angka kasus dan kematian. Hal ini dapat membantu dalam memahami kebijakan mana yang lebih efektif dalam menangani pandemi Covid-19. Pertama-tama dilakukan import library yang dibutuhkan seperti SparkSession, avg dari pyspark.sql.functions, serta matplotlib.pyplot dan seaborn untuk visualisasi data. Kemudian dibuat session Spark dan membaca file CSV menggunakan metode read.csv(). Dilanjutkan dengan penghapusan duplikasi data dan data kosong menggunakan metode dropDuplicates() dan na.drop(). Selanjutnya, hanya memilih kolom yang dibutuhkan untuk analisa, yaitu location, date, total_cases, total_deaths, dan stringency_index. Data kemudian dikelompokkan berdasarkan location dan date, dan dihitung total_cases dan total_deaths menggunakan fungsi sum(), serta rata-rata stringency_index menggunakan fungsi avg(). Kolom hasil pengelompokkan dan perhitungan kemudian diubah namanya menggunakan withColumnRenamed(). Data hasil transformasi ditulis ke dalam file CSV menggunakan metode write.csv(). Keseluruhan proses tersebut dapat digunakan untuk analisa mengenai perbandingan kebijakan pemerintah dan dampaknya terhadap angka kasus dan kematian Covid-19 di berbagai negara,
 </p>
 </div>
 
