@@ -67,13 +67,13 @@ Pada skenario ini yang dilakukan adalah melakukan analisa mengenai average GDP p
 </p>
 </div>
 
-## upload
+## Upload
 <img src="preparing_data.png" />
 
-## proses
+## Proses Skenario 1
 <img src="proses.png" />
 
-## hasil
+## Hasil Skenario 1
 <img src="hasil.png" />
 
 ## Skenario 2
@@ -101,8 +101,8 @@ Pada skenario ini yang dilakukan adalah melakukan analisa mengenai perbandingan 
 </p>
 </div>
 
-## proses
+## Proses Skenario 2
 <img src="Skenario2.png" />
 
-## hasil
+## Hasil Skenario 2
 <img src="Hasil2.png" />
