@@ -41,6 +41,7 @@ df.write.mode("overwrite").option("header", "true").csv("covid_impact_on_global_
 <div align="justify">
 Dikarenakan keterbatasan untuk menampilkan visualisasi dengan gambar pada platform CLI maka untuk visualisasi hanya akan menampilkan hasil akhir dari preprocessing data yaitu adalah tabel baru mengenai hasil analisa yang dilakukan
 </div>
+
 ## Skenario 1
 <div>
   <pre>
