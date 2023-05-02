@@ -37,64 +37,8 @@ df.write.mode("overwrite").option("header", "true").csv("covid_impact_on_global_
 </p>
 </div>
 
-# Visualisasi
-<img src="diagram_batang.png" />
-<div>
-  <pre>
-    <code>
-df['year'] = df['date'].dt.year
-
-df_yearly_gdp = df.groupby(['location', 'year']).agg({'gdp_per_capita': 'mean'}).reset_index()
-
-df_pivot = df_yearly_gdp.pivot(index='location', columns='year', values='gdp_per_capita')
-
-plt.figure(figsize=(20, 50))
-plt.title('Yearly GDP per Capita by Location')
-sns.barplot(data=df_yearly_gdp, y='location', x='gdp_per_capita', hue='year', orient='h')
-plt.xlabel('GDP per Capita')
-plt.ylabel('Location')
-plt.legend(loc='center right', bbox_to_anchor=(1.2, 0.5))
-plt.tight_layout()
-plt.show()
-    </code>
-  </pre>
-  <p align="justify">
-visualisasi grafik batang yang menunjukkan rata-rata PDB per kapita setiap tahun di setiap lokasi. Langkah-langkah yang dilakukan meliputi menambahkan kolom tahun ke dalam dataframe, menghitung rata-rata PDB per kapita setiap tahun di setiap lokasi, mengubah struktur dataframe menjadi pivot table, dan membuat visualisasi grafik batang menggunakan library seaborn. Hasil akhirnya adalah grafik batang yang menunjukkan rata-rata PDB per kapita setiap tahun di setiap lokasi.<br><br>
-</div>
-
-<img src="peta_persebaran.png" />
-<div>
-  <pre>
-    <code>
-import geopandas as gpd
-import matplotlib.pyplot as plt
-
-world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
-
-gdp_2020 = df_yearly_gdp[df_yearly_gdp['year'] == 2020]
-world_gdp = world.merge(gdp_2020, how='left', left_on='name', right_on='location')
-
-fig, ax = plt.subplots(figsize=(20,10))
-world_gdp.plot(column='gdp_per_capita',edgecolor=u'gray', cmap='Blues', ax=ax, legend=True, legend_kwds={'label': 'GDP per Capita ($)', 'orientation': 'horizontal'})
-ax.set_title('World GDP per Capita in 2020')
-ax.set_axis_off()
-
-leg = ax.get_legend()
-
-for text in leg.get_texts():
-    text.set_color('white')
-
-leg.get_title().set_color('white')
-
-plt.show()
-    </code>
-  </pre>
-  <p align="justify">
-membuat peta dunia dengan GDP per kapita sebagai variabel. Pertama, diambil data shapefile dunia dari library Geopandas, kemudian di-merge dengan data GDP tahunan yang sudah dihitung sebelumnya. Data GDP diambil untuk tahun 2020 saja. Selanjutnya, peta dunia dibuat dengan menampilkan data GDP per kapita menggunakan plot dengan skala warna yang berbeda-beda. Pada akhirnya, disesuaikan tampilan plot seperti judul, legenda, serta tampilan legend dan label untuk memastikan plot lebih mudah dipahami dan estetis. (untuk visualisasi ini menggunakan phyton dikarenakan data mendukung untuk melakukan visualisasi dengan peta dunia , dan geopandas dan matplotlib adalah library Python yang tidak didukung langsung oleh PySpark )
-</p>
-</div>
-
-# Proses Skenario
+# Proses Skenario dan Visualisasi
+## Skenario 1
 <div>
   <pre>
     <code>
@@ -115,7 +59,7 @@ df_transformed.write.csv("transformed_data.csv", header=True)
     </code>
   </pre>
   <p align="justify">
-Pertama-tama, dataset di-load dari file CSV menggunakan PySpark SparkSession dan dibersihkan dari data yang tidak valid seperti data kosong dan duplikat. Setelah data bersih, data di-transformasikan dengan menggunakan fungsi PySpark groupBy dan agg untuk menghitung rata-rata gdp_per_capita dari setiap lokasi dan tanggal. Selanjutnya, hasil analisis divisualisasikan dengan menggunakan fungsi matplotlib dan seaborn untuk menghasilkan grafik garis yang menunjukkan rata-rata GDP per Kapita untuk setiap lokasi dan tanggal. Terakhir, hasil analisis diekspor ke dalam format CSV menggunakan fungsi PySpark write. Kode tersebut menunjukkan contoh dari proses analisis data yang lengkap dengan PySpark, dimulai dari loading data, pembersihan data, transformasi data, visualisasi data, dan ekspor hasil analisis.
+Pada skenario ini yang dilakukan adalah melakukan analisa mengenai average GDP pada setiap negara pada saat pandemi Covid-19 dengan harapan data analisa dapat digunakan untuk membantu dalam memahami seberapa besar dampak pandemi Covid-19 pada perekonomian dan kesejahteraan masyarakat di berbagai negara.Pertama-tama, dataset di-load dari file CSV menggunakan PySpark SparkSession dan dibersihkan dari data yang tidak valid seperti data kosong dan duplikat. Setelah data bersih, data di-transformasikan dengan menggunakan fungsi PySpark groupBy dan agg untuk menghitung rata-rata gdp_per_capita dari setiap lokasi dan tanggal. Selanjutnya, hasil analisis divisualisasikan dengan menggunakan fungsi matplotlib dan seaborn untuk menghasilkan grafik garis yang menunjukkan rata-rata GDP per Kapita untuk setiap lokasi dan tanggal. Terakhir, hasil analisis diekspor ke dalam format CSV menggunakan fungsi PySpark write. Kode tersebut menunjukkan contoh dari proses analisis data yang lengkap dengan PySpark, dimulai dari loading data, pembersihan data, transformasi data, visualisasi data, dan ekspor hasil analisis.
 </p>
 </div>
 
