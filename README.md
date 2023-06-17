@@ -111,3 +111,7 @@ Pada skenario ini yang dilakukan adalah melakukan analisa mengenai perbandingan 
 
 ## Hasil Skenario 2
 <img src="Hasil2.png" />
+
+## Team
+* [@R M Azmi Herdi S](https://github.com/2azmi2)
+* [@Ramona Andhani](https://github.com/ramonaandhani17)
